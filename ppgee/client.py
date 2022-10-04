@@ -1,11 +1,9 @@
 import aiohttp
 import asyncio
 import logging
-from datetime import date
-from ppgee.errors import RequestException
+from ppgee.http import HttpClient
 
 logger = logging.getLogger(__name__)
-URL_BASE = "https://www.ppgee.ufmg.br/ppgeenet"
 
 
 class PPGEE:
@@ -13,9 +11,11 @@ class PPGEE:
         self.user = user
         self.password = password
         self.session: aiohttp.ClientSession
+        self.http: HttpClient
 
     async def __aenter__(self):
         self.session = aiohttp.ClientSession()
+        self.http = HttpClient(self.session)
         await self.login()
         return self
 
@@ -25,33 +25,14 @@ class PPGEE:
         if self.session:
             await self.session.close()
 
-    async def _request(self, method: str, url: str, **kwargs) -> str:
-        async with self.session.request(method, url, **kwargs) as resp:
-            if resp.status != 200:
-                raise RequestException(
-                    f"Request to url {url} with method {method} failed with status code {resp.status}."
-                )
-            return await resp.text()
-
     async def login(self) -> str:
-        logger.debug("Sending request to login.")
-        data: dict[str, str] = {"login": self.user, "senha": self.password}
-        return await self._request("post", f"{URL_BASE}/login.php", data=data)
+        return await self.http.login(self.user, self.password)
 
     async def frequency(self) -> str:
-        logger.debug("Sending request to frequency.")
-        return await self._request("get", f"{URL_BASE}/afreq.php")
+        return await self.http.frequency()
 
     async def frequency_confirmation(self) -> str:
-        logger.debug("Sending request to confirm frequency.")
-        today = date.today()
-        data: dict[str, str] = {
-            "freqano": str(today.year),
-            "freqmes": str(today.month),
-            "confirma": "checkbox",
-        }
-        return await self._request("POST", f"{URL_BASE}/afreqpasso2.php", data=data)
+        return await self.http.frequency_confirmation()
 
     async def logoff(self) -> str:
-        logger.debug("Sending request to logoff.")
-        return await self._request("get", f"{URL_BASE}/logoff.php")
+        return await self.http.logoff()
