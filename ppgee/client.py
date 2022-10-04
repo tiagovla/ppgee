@@ -3,6 +3,7 @@ import logging
 from ppgee.http import HttpClient
 from ppgee.pages import FrequencyPage
 from functools import wraps
+from ppgee import errors
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +47,10 @@ class PPGEE:
     async def login(self) -> None:
         logger.info("Logging in...")
         if self.user and self.password:
-            await self.http.login(self.user, self.password)
+            resp = await self.http.login(self.user, self.password)
+            if "aindex" not in resp: # authentication failed
+                await self.close()
+                raise errors.InvalidCredentialsException()
             self.is_logged = True
         else:
             logger.info("Logged in without credentials")
