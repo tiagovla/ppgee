@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 def is_logged_check(method):
     @wraps(method)
     def wrapper(self, *args, **kwargs):
-        print("checking if logged in", self.is_logged)
         if not self.is_logged:
             raise Exception("You must be logged in to use this method")
         return method(self, *args, **kwargs)
