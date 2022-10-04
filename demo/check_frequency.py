@@ -1,16 +1,17 @@
 import asyncio
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
 from ppgee import PPGEE
 
+logging.basicConfig(level=logging.INFO)
 
-async def main():
+
+async def main() -> None:
     cpf = "00011122233"
-    async with PPGEE(cpf, cpf) as ppgee:
-        response = await ppgee.frequency()
-        if "Opção não disponível" in response:
-            print("Not ready yet")
+    async with PPGEE(user=cpf, password=cpf) as ppgee:
+        frequency_page = await ppgee.frequency()
+        print(frequency_page.history())
+        await frequency_page.confirm()
         await asyncio.sleep(5)
 
 

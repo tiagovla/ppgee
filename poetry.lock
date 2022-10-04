@@ -60,6 +60,21 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.11.1"
+description = "Screen-scraping library"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
 name = "charset-normalizer"
 version = "2.1.1"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
@@ -194,6 +209,14 @@ python-http-client = ">=3.2.1"
 starkbank-ecdsa = ">=2.0.1"
 
 [[package]]
+name = "soupsieve"
+version = "2.3.2.post1"
+description = "A modern CSS selector implementation for Beautiful Soup."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "starkbank-ecdsa"
 version = "2.0.3"
 description = "A lightweight and fast pure python ECDSA library"
@@ -224,7 +247,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e2c81cf40eb115ecc3c2e19723d94097e237dbda967e5eaf06660c758e73e915"
+content-hash = "04315ad95e7d31d6046cbac5bc97855e2fa45eb9c6c2f16c2cc0dfc166e1bcf1"
 
 [metadata.files]
 aiohttp = []
@@ -232,6 +255,7 @@ aiosignal = []
 async-timeout = []
 atomicwrites = []
 attrs = []
+beautifulsoup4 = []
 charset-normalizer = []
 colorama = []
 frozenlist = []
@@ -245,6 +269,7 @@ pyparsing = []
 pytest = []
 python-http-client = []
 sendgrid = []
+soupsieve = []
 starkbank-ecdsa = []
 wcwidth = []
 yarl = []
