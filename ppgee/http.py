@@ -18,7 +18,8 @@ class HttpClient:
             logger.debug(f"Request: {url} Status: {resp.status}")
             if resp.status != 200:
                 raise RequestException(
-                    f"Request to url {url} with method {method} failed with status code {resp.status}."
+                    f"Request to url {url} with method {method} failed "
+                    " with status code {resp.status}."
                 )
             return await resp.text()
 
