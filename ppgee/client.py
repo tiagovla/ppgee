@@ -39,7 +39,7 @@ class PPGEE:
         await self.login()
         return self
 
-    async def __aexit__(self, exc_type, exc, tb) -> None:
+    async def __aexit__(self, *_) -> None:
         if self.is_logged:
             await self.logoff()
         await self.close()
@@ -48,7 +48,7 @@ class PPGEE:
         logger.info("Logging in...")
         if self.user and self.password:
             resp = await self.http.login(self.user, self.password)
-            if "aindex" not in resp: # authentication failed
+            if "aindex" not in resp:  # authentication failed
                 await self.close()
                 raise errors.InvalidCredentialsException()
             self.is_logged = True

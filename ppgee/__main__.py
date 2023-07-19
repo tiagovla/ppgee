@@ -34,7 +34,10 @@ async def cli():
 
 
 def main():
-    asyncio.run(cli())
+    try:
+        asyncio.run(cli())
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt. Exiting.")
 
 
 if __name__ == "__main__":
