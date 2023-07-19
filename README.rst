@@ -11,9 +11,9 @@
   async def main() -> None:
       cpf = "00011122233"
       async with PPGEE(user=cpf, password=cpf) as ppgee:
-          frequency_page = await ppgee.frequency()
-          print(frequency_page.history())
-          await frequency_page.confirm()
+          attendency_page = await ppgee.attendency()
+          print(attendency_page.history())
+          await attendency_page.confirm()
           await asyncio.sleep(5)
 
 

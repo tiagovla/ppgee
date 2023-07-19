@@ -1,5 +1,3 @@
-from .frequency import FrequencyPage
+from .attendency import AttendencyPage, AttendencyHistory, AttendencyHistoryEntry
 
-__all__ = [
-    "FrequencyPage",
-]
+__all__ = ["AttendencyPage", "AttendencyHistory", "AttendencyHistoryEntry"]

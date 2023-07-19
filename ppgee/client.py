@@ -1,21 +1,14 @@
-import aiohttp
 import logging
-from ppgee.http import HttpClient
-from ppgee.pages import FrequencyPage
-from functools import wraps
+
+import aiohttp
+
 from ppgee import errors
+from ppgee.http import HttpClient
+from ppgee.pages import AttendencyPage, AttendencyHistory, AttendencyHistoryEntry
+from ppgee.parsers import AttendencyParser
+from ppgee.permissions import is_logged_check
 
 logger = logging.getLogger(__name__)
-
-
-def is_logged_check(method):
-    @wraps(method)
-    def wrapper(self, *args, **kwargs):
-        if not self.is_logged:
-            raise Exception("You must be logged in to use this method")
-        return method(self, *args, **kwargs)
-
-    return wrapper
 
 
 class PPGEE:
@@ -56,10 +49,16 @@ class PPGEE:
             logger.info("Logged in without credentials")
 
     @is_logged_check
-    async def frequency(self) -> FrequencyPage:
-        logger.info("Requesting frequency page...")
-        html = await self.http.frequency()
-        return FrequencyPage(html, self.http.frequency_confirmation)
+    async def attendency(self) -> AttendencyPage:
+        logger.info("Requesting attendency page...")
+        html = await self.http.attendency()
+        parser = AttendencyParser(html)
+        history = AttendencyHistory(
+            (AttendencyHistoryEntry(**item) for item in parser.history())
+        )
+        return AttendencyPage(
+            history, self.http.attendency_confirmation, parser.availability()
+        )
 
     @is_logged_check
     async def logoff(self) -> None:

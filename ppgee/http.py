@@ -26,10 +26,10 @@ class HttpClient:
         data: dict[str, str] = {"login": user, "senha": password}
         return await self._request("post", f"{URL_BASE}/login.php", data=data)
 
-    async def frequency(self) -> str:
+    async def attendency(self) -> str:
         return await self._request("get", f"{URL_BASE}/afreq.php")
 
-    async def frequency_confirmation(self) -> str:
+    async def attendency_confirmation(self) -> str:
         today = date.today()
         data: dict[str, str] = {
             "freqano": str(today.year),

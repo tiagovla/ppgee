@@ -1,21 +1,20 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Callable, Awaitable
 import logging
-
-from ppgee.parser import parse_frequency_history
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class HistoryEntry:
+class AttendencyHistoryEntry:
     year: int
     month: int
     asked: datetime
     confirmed: datetime | None
 
 
-class History(list[HistoryEntry]):
+class AttendencyHistory(list[AttendencyHistoryEntry]):
     def __str__(self) -> str:
         out: list[str] = []
         for entry in self:
@@ -24,28 +23,24 @@ class History(list[HistoryEntry]):
         return "\n".join(out)
 
 
-class FrequencyPage:
-    def __init__(self, html, confirmation_callback):
-        self.html = html
-        self._history = History()
+class AttendencyPage:
+    def __init__(
+        self,
+        history: AttendencyHistory,
+        confirmation_callback: Callable[[], Awaitable[str]],
+        available: bool,
+    ):
+        self._history = history
+        self._available = available
         self.confirmation_callback = confirmation_callback
 
-    def _build_history(self):
-        result_list = parse_frequency_history(self.html)
-        for item in result_list:
-            self._history.append(HistoryEntry(**item))
-
-    def history(self) -> History:
-        if not self._history:
-            self._build_history()
+    def history(self) -> AttendencyHistory:
         return self._history
 
     def is_available(self):
-        if "Opção não disponível" in self.html:
-            return False
-        return True
+        return self._available
 
     async def confirm(self) -> None:
         if self.is_available():
-            logger.info("Requesting frequency confirmation...")
+            logger.info("Requesting attendency confirmation...")
             await self.confirmation_callback()

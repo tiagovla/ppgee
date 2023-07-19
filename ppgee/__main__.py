@@ -21,11 +21,11 @@ async def cli():
     user, password = args.username, args.password
     try:
         async with PPGEE(user=user, password=password) as ppgee:
-            frequency_page = await ppgee.frequency()
+            attendency_page = await ppgee.attendency()
             await asyncio.sleep(1)
-            if frequency_page.is_available():
+            if attendency_page.is_available():
                 print("Attendency confirmed.")
-                await frequency_page.confirm()
+                await attendency_page.confirm()
             else:
                 eprint("Attendency not available yet.")
             await asyncio.sleep(1)
