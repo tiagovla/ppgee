@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def main() -> None:
-    cpf = "00011122233"
+    cpf = "09963250696"
     async with PPGEE(user=cpf, password=cpf) as ppgee:
         attendency_page = await ppgee.attendency()
         print(attendency_page.history())

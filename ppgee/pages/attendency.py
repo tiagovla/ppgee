@@ -37,7 +37,7 @@ class AttendencyPage:
     def history(self) -> AttendencyHistory:
         return self._history
 
-    def is_available(self):
+    def is_available(self) -> bool:
         return self._available
 
     async def confirm(self) -> None:
