@@ -1,4 +1,6 @@
-.. code:: python
+# Example:
+
+```python
 
   import asyncio
   import logging
@@ -19,3 +21,4 @@
 
   if __name__ == "__main__":
       asyncio.run(main())
+```
