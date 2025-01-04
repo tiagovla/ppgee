@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  ppgee:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - USERNAME=00011122233
+      - PASSWORD=00011122233
