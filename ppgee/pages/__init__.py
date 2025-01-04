@@ -1,3 +1,7 @@
-from .attendency import AttendencyPage, AttendencyHistory, AttendencyHistoryEntry
+from .attendency import (
+    AttendencyPage,
+    AttendencyHistory,
+    AttendencyHistoryEntry,
+)
 
 __all__ = ["AttendencyPage", "AttendencyHistory", "AttendencyHistoryEntry"]

@@ -4,7 +4,11 @@ import aiohttp
 
 from ppgee import errors
 from ppgee.http import HttpClient
-from ppgee.pages import AttendencyPage, AttendencyHistory, AttendencyHistoryEntry
+from ppgee.pages import (
+    AttendencyPage,
+    AttendencyHistory,
+    AttendencyHistoryEntry,
+)
 from ppgee.parsers import AttendencyParser
 from ppgee.permissions import is_logged_check
 
@@ -46,7 +50,8 @@ class PPGEE:
                 raise errors.InvalidCredentialsException()
             self.is_logged = True
         else:
-            logger.info("Logged in without credentials")
+            logger.info("Missing credentials!")
+            raise errors.InvalidCredentialsException()
 
     @is_logged_check
     async def attendency(self) -> AttendencyPage:
@@ -54,7 +59,7 @@ class PPGEE:
         html = await self.http.attendency()
         parser = AttendencyParser(html)
         history = AttendencyHistory(
-            (AttendencyHistoryEntry(**item) for item in parser.history())
+            AttendencyHistoryEntry(**item) for item in parser.history()
         )
         return AttendencyPage(
             history, self.http.attendency_confirmation, parser.availability()
